@@ -7,7 +7,7 @@
           <el-button @click="clear" type="danger" icon="el-icon-delete" circle></el-button>
         </div>
         <div class="main__search">
-          <el-input v-model.trim="name"  placeholder="Поиск по имени"></el-input>
+          <el-input v-model.trim="name"  placeholder="Поиск по имени/фамилии"></el-input>
           <el-select class="main__select" v-model="email" placeholder="Поиск по email">
             <el-option
               v-for="item in users"
@@ -151,6 +151,7 @@ export default Vue.extend({
 
   &__horizontal {
     display: flex;
+    justify-content: center;
     flex-direction: row;
     flex-wrap: nowrap;
 
