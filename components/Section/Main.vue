@@ -68,26 +68,20 @@ export default Vue.extend({
       return this.$store.getters['users/users'] || []
     },
     filter():User[] {
-      return this.users.filter((user: User) => {
+      let newArr: User[] = this.users
+      newArr = newArr.filter((user) => {
         const fullName = `${user.first_name + user.last_name}`
-        console.log(this.email);
-
-        if (fullName.toLowerCase().includes(this.name.toLowerCase()) || user.email.includes(this.email)) {
-         return user
+        if (this.name && this.email) {
+          return fullName.toLowerCase().includes(this.name.toLowerCase()) && user.email === this.email
+        }
+        if (this.name && fullName.toLowerCase().includes(this.name.toLowerCase())) {
+          return user
+        }
+        if (user.email === this.email) {
+          return user
         }
       })
-      // let newArr: User[] = []
-
-      //  this.users.map((user) => {
-      //   const fullName = `${user.first_name + user.last_name}`
-      //   if (user.email === this.email) {
-      //     newArr.push(user)
-      //   }
-      //   if (fullName.toLowerCase().includes(this.name.toLowerCase())) {
-      //     newArr.push(user)
-      //   }
-      //   })
-      //   return newArr
+      return this.name || this.email ? newArr : this.users
     },
     notFound():boolean {
       return !this.filter.length ? true : false

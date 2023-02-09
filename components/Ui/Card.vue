@@ -32,7 +32,7 @@ export default Vue.extend({
 .card {
   background: #292D32;
   padding: 15px 25px;
-  border-radius: 16px;
+  border-radius: 35px;
   transition: .2s;
   cursor: pointer;
 
@@ -48,10 +48,12 @@ export default Vue.extend({
     display: flex;
     flex-direction: column;
   }
+
   &__img {
     max-width: 30%;
     border-radius: 35px;
   }
+
   &__title {
     font-weight: 700;
     font-size: 28px;
@@ -59,6 +61,7 @@ export default Vue.extend({
     padding-top: 12px;
     color: #FFFFFF;;
   }
+
   &__description {
     font-weight: 500;
     font-size: 14px;
@@ -71,6 +74,5 @@ export default Vue.extend({
     overflow: hidden;
     margin-bottom: 14px;
   }
-
 }
 </style>

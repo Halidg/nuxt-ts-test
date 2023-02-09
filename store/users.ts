@@ -4,7 +4,6 @@ import { User } from '~/types/user/user-interface'
 
 export type RootState = ReturnType<typeof state>
 
-
 export const state = () => ({
   users: [] as User[]
 })
