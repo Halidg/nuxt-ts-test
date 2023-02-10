@@ -1,7 +1,12 @@
-import axios from 'axios'
+import $api from '~/http'
 
 export default class UserService {
-  static async getData(val:number) {
-    return await axios.get(`https://reqres.in/api/users?page=${val}&per_page=6`)
+  static async getData(page: number) {
+    return await $api.get('/users', {
+      params: {
+        per_page: 6,
+        page,
+      }
+    })
   }
 }

@@ -1,4 +1,4 @@
-@import "./variables/variables.scss";
+@import './variables/breackpoints.scss';
 
 @mixin desktopHd() {
   @media screen and (max-width: $bp-desktop-hd) {

@@ -1,28 +1,27 @@
 <template>
-  <div class="card" @click="toDetail(user.id)">
+  <div class="card" @click="$emit('click', user.id)">
     <div class="card__content">
-      <img class="card__img" :src=user.avatar alt="">
-      <h2 class="card__title">{{user.first_name}}</h2>
-      <span class="card__description">{{user.last_name}}</span>
+      <img class="card__img" :src=user.avatar>
+
+      <h2 class="card__title">{{ user.first_name }}</h2>
+
+      <span class="card__description">{{ user.last_name }}</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { IUser } from '~/store/types'
 
 export default Vue.extend({
   name: 'Card',
+
   props:{
     user: {
-      type: Object
+      type: Object as () => IUser,
     },
   },
-  methods: {
-    toDetail(id:string) {
-      this.$router.push(`/user/${id}`)
-    }
-  }
 })
 </script>
 
@@ -30,18 +29,15 @@ export default Vue.extend({
  @import "@/styles/mixins.scss";
 
 .card {
-  background: #292D32;
+  width: 100%;
+  background: var(--dark-1);
   padding: 15px 25px;
   border-radius: 35px;
   transition: .2s;
   cursor: pointer;
 
   &:hover {
-    box-shadow: 10px 10px 24px -4px rgba(112,43,254,0.61);
-
-    @include phones() {
-      box-shadow: none;
-    }
+    box-shadow: 5px 5px 20px -4px rgba(112,43,254,0.61);
   }
 
   &__content {
@@ -59,14 +55,14 @@ export default Vue.extend({
     font-size: 28px;
     line-height: 33px;
     padding-top: 12px;
-    color: #FFFFFF;;
+    color: var(--main-light);;
   }
 
   &__description {
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
-    color: #FFFFFF;
+    color: var(--main-light);
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;

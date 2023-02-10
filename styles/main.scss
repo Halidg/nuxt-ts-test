@@ -22,11 +22,11 @@ body {
   box-sizing: border-box;
   background: var(--dark-2);
   scrollbar-color: transparent;
-  scrollbar-width: var(--main-scrollbar-width);
+  scrollbar-width: 5px;
 }
 
 ::-webkit-scrollbar {
-  width: var(--main-scrollbar-width);
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -34,16 +34,16 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--main-color);
-  border-radius: var(--main-scrollbar-thumb-borderradius);
+  background: var(--dark-1);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--main-color);;
+  background: var(--dark-1);;
 }
 
 a {
-  color: var(--main-color);
+  color: var(--dark-1);
 }
 
 .main,
@@ -65,8 +65,9 @@ a {
 
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.2s;
 }
+
 .page-enter,
 .page-leave-active {
   opacity: 0;

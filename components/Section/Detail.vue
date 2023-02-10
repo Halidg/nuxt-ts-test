@@ -3,12 +3,15 @@
     <LayoutsContainer>
       <div class="detail__content">
         <div class="detail__left">
-          <img class="detail__img" :src='user.avatar' alt="">
+          <img class="detail__img" :src='user.avatar'>
         </div>
+
         <div class="detail__right">
-          <h2 class="detail__title">{{user.first_name}}</h2>
-          <span class="detail__description">{{user.last_name}}</span>
+          <h2 class="detail__title">{{ user.first_name }}</h2>
+
+          <span class="detail__description">{{ user.last_name }}</span>
         </div>
+
       </div>
     </LayoutsContainer>
   </section>
@@ -16,15 +19,15 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { User } from '~/types/user/user-types'
+import { IUser } from '~/store/types'
 
 export default Vue.extend({
-  computed:{
-    user():User {
-      const idToNumber = Number(this.$route.params.id)
-      return this.$store.getters['users/usersById'](idToNumber)
+  props: {
+    user: {
+      type: Object as () => IUser,
+      required: true,
     }
-  }
+  },
 })
 </script>
 
@@ -32,7 +35,7 @@ export default Vue.extend({
 @import "@/styles/mixins.scss";
 .detail {
   padding-top: 220px;
-  background: #1E1E1E;
+  background: var(--main-positive-color);
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -59,7 +62,7 @@ export default Vue.extend({
     font-weight: 700;
     font-size: 32px;
     line-height: 38px;
-    color: #FFFFFF;;
+    color: var(--main-light);;
     margin-bottom: 24px;
   }
 
@@ -78,14 +81,14 @@ export default Vue.extend({
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
-    color: #FFFFFF;
+    color: var(--main-light);
   }
 
   &__subtitle {
     font-weight: 700;
     font-size: 32px;
     line-height: 38px;
-    color: #FFFFFF;
+    color: var(--main-light);
     margin-top: 16px;
   }
 }

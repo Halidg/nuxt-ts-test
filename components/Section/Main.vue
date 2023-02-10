@@ -3,88 +3,123 @@
     <LayoutsContainer>
       <div class="main__block">
         <div class="main__action">
-          <el-button class="main__btn" @click="change" type="primary" icon="el-icon-edit" circle></el-button>
-          <el-button @click="clear" type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button
+            class="main__btn"
+            type="primary"
+            :icon="isHorizontal ? 'el-icon-menu' : 'el-icon-s-fold'"
+            circle
+            @click="onChangeStyle"
+          />
         </div>
+
         <div class="main__search">
-          <el-input v-model.trim="name"  placeholder="Поиск по имени/фамилии"></el-input>
-          <el-select class="main__select" v-model="email" placeholder="Поиск по email">
+          <el-input v-model.trim="name" clearable placeholder="Поиск по имени/фамилии" />
+
+          <el-select v-model="email" clearable class="main__select" placeholder="Поиск по email">
             <el-option
               v-for="item in users"
               :key="item.id"
               :value="item.email">
             </el-option>
           </el-select>
+
         </div>
       </div>
-      <div class="main__content"  :class="{'main__horizontal' : changeStyle}">
-        <UiCard v-for="item in filter"
-          :key="item.id"
-          :user="item"></UiCard>
+
+      <div class="main__content" :class="{'main__content_horizontal' : isHorizontal}">
+        <UiCard v-for="user in filteredUsers"
+          :key="user.id"
+          :user="user"
+          @click="toDetail"
+        />
       </div>
-      <p class="main__text" v-show="notFound">Такого юзера с данным именем и email нет!</p>
+
+      <p class="main__text" v-if="notFound">Такого юзера с данным именем и email нет!</p>
+
       <div class="main__pagination">
         <el-pagination
-         @current-change="handleCurrentChange"
+          :page-count="totalPages"
           background
           layout="prev, pager, next"
-          :total="20">
+          @current-change="onCurrentChange"
+        >
         </el-pagination>
       </div>
+
     </LayoutsContainer>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { User } from '~/types/user/user-types'
+import { IUser } from '~/store/types'
 
 export default Vue.extend({
   name: 'Main',
-  mounted() {
-    this.$store.dispatch('users/getUsers')
+
+  props: {
+    users: {
+      type: Array as () => IUser[],
+      required: true,
+    },
+    totalPages: {
+      type: Number,
+      default: 0,
+    },
   },
+
   data() {
     return {
       name: '',
       email: '',
-      changeStyle: false,
+      isHorizontal: false,
     }
   },
+
   methods: {
-    handleCurrentChange(val: number) {
-      this.$store.dispatch('users/getUsers', val)
+    onCurrentChange(page: number) {
+      this.clearInputs()
+      this.$emit('on-current-change', page)
     },
-    clear():void {
+
+    clearInputs() {
       this.name = ''
       this.email = ''
     },
-    change():void {
-      this.changeStyle = !this.changeStyle
+
+    toDetail(id: string) {
+      this.$router.push(`/user/${id}`)
+    },
+
+    onChangeStyle() {
+      this.isHorizontal = !this.isHorizontal
     }
   },
+
   computed: {
-    users():[User] {
-      return this.$store.getters['users/users'] || []
-    },
-    filter():User[] {
-      let newArr: User[] = this.users
+    filteredUsers(): IUser[] {
+      let newArr: IUser[] = this.users
+
       newArr = newArr.filter((user) => {
         const fullName = `${user.first_name + user.last_name}`
+
         if (this.name && this.email) {
           return fullName.toLowerCase().includes(this.name.toLowerCase()) && user.email === this.email
         }
+
         if (this.name && fullName.toLowerCase().includes(this.name.toLowerCase())) {
           return user
         }
+
         if (user.email === this.email) {
           return user
         }
       })
-      return this.name || this.email ? newArr : this.users
+      return (this.name || this.email) ? newArr : this.users
     },
-    notFound():boolean {
-      return !this.filter.length ? true : false
+
+    notFound(): boolean {
+      return !this.filteredUsers.length
     },
   },
 })
@@ -95,7 +130,7 @@ export default Vue.extend({
 .main {
   padding-top: 100px;
   padding-bottom: 42px;
-  background: #1E1E1E;
+  background: var(--main-positive-color);
 
   &__block {
     display: flex;
@@ -110,10 +145,6 @@ export default Vue.extend({
 
   &__btn {
     @include tablets() {
-      display: none;
-    }
-
-    @include phones() {
       display: none;
     }
   }
@@ -135,7 +166,7 @@ export default Vue.extend({
 
   &__content {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 28px;
     grid-row-gap: 16px;
     margin-top: 50px;
@@ -147,31 +178,28 @@ export default Vue.extend({
     @include phones() {
       grid-template-columns: repeat(1, 1fr);
     }
-  }
 
-  &__horizontal {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    &_horizontal {
+      display: flex;
 
-    @include tablets() {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-    }
+      @include tablets() {
+        display: grid;
+        grid-column-gap: 28px;
+        grid-row-gap: 16px;
+        margin-top: 50px;
+        grid-template-columns: repeat(2, 1fr);
+      }
 
-    @include phones() {
-      display: grid;
-      grid-column-gap: 28px;
-      grid-row-gap: 16px;
-      grid-template-columns: repeat(1, 1fr);
+      @include phones() {
+        grid-template-columns: repeat(1, 1fr);
+      }
     }
   }
 
   &__text {
     font-size: 25px;
     text-align: center;
-    color: #FFF;
+    color: var(--main-light);
     margin-top: 100px;
     margin-bottom: 125px;
   }
