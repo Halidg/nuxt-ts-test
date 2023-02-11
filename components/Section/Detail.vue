@@ -49,8 +49,8 @@ export default Vue.extend({
     @include tablets() {
       flex-direction: column;
     }
-
   }
+
   &__left {
     display: flex;
     flex-direction: column;
