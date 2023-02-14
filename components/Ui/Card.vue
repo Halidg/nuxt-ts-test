@@ -63,10 +63,6 @@ export default Vue.extend({
     font-size: 14px;
     line-height: 16px;
     color: var(--main-light);
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
     overflow: hidden;
     margin-bottom: 14px;
   }
