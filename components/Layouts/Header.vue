@@ -1,8 +1,8 @@
 <template>
   <header class="header">
-    <div class="container">
+    <LayoutsContainer>
       <a class="header__title" @click="toMain">Test Task</a>
-    </div>
+    </LayoutsContainer>
   </header>
 </template>
 <script lang="ts">
